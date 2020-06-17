@@ -23,7 +23,10 @@ public class GameTable implements Serializable {
 	@Column(name = "previous_game_table_id")
 	private Long previousGameTableId;
 
+	@Column(name = "next_game_table_id")
+	private Long nextGameTableId;
+
 	@OneToMany(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
 	@JoinColumn(name = "tableId", referencedColumnName = "id", nullable = false)
-	private List<TableRow> tableRow = new ArrayList<>();
+	private List<TableRow> tableRows = new ArrayList<>();
 }

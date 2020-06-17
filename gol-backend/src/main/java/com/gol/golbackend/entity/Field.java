@@ -13,8 +13,8 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "row_field")
-public class RowField implements Serializable {
+@Table(name = "field")
+public class Field implements Serializable {
 
 	@Id
 	@Column(name = "id")
@@ -25,4 +25,9 @@ public class RowField implements Serializable {
 	@Enumerated(EnumType.ORDINAL)
 	@Column(name = "field_status")
 	private FieldStatus fieldStatus;
+
+
+	public Field(FieldStatus fieldStatus) {
+		this.fieldStatus = fieldStatus;
+	}
 }

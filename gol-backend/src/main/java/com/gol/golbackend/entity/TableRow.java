@@ -1,7 +1,6 @@
 package com.gol.golbackend.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -25,5 +24,5 @@ public class TableRow implements Serializable {
 
 	@OneToMany(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
 	@JoinColumn(name = "tableRowId", referencedColumnName = "id", nullable = false)
-	private List<RowField> rowField = new ArrayList<>();
+	private List<Field> rowFields = new ArrayList<>();
 }
