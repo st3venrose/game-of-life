@@ -69,7 +69,7 @@ public class GolControllerTest {
 	public void testProcessGameState() throws Exception {
 		when(golServiceImpl.calculateNextGameState(anyLong())).thenReturn(gameTable);
 
-		mvc.perform(get("/api/process-game-state/{gameStateId}", 1L)
+		mvc.perform(get("/api/new-game-state/{gameStateId}", 1L)
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.id", is(2)))
@@ -81,7 +81,7 @@ public class GolControllerTest {
 	public void testGetGameState() throws Exception {
 		when(golServiceImpl.getGameState(anyLong())).thenReturn(gameTable);
 
-		mvc.perform(get("/api/get-game-state/{gameStateId}", 1L)
+		mvc.perform(get("/api/game-state/{gameStateId}", 1L)
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.id", is(2)))

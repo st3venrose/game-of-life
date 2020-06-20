@@ -19,12 +19,12 @@ public class GolController {
 		return golServiceImpl.startGame(gameTableDto);
 	}
 
-	@GetMapping("/process-game-state/{gameStateId}")
+	@GetMapping("/new-game-state/{gameStateId}")
 	public GameTable processGameState(@PathVariable final Long gameStateId) {
 		return golServiceImpl.calculateNextGameState(gameStateId);
 	}
 
-	@GetMapping("/get-game-state/{gameStateId}")
+	@GetMapping("/game-state/{gameStateId}")
 	public GameTable getGameState(@PathVariable final Long gameStateId) {
 		return golServiceImpl.getGameState(gameStateId);
 	}
