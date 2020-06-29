@@ -1,0 +1,16 @@
+<div class="home">
+  <h2>Select game table size</h2>
+  <gol-size-selector
+    class="u-margin-top-small"
+    label="Table size"
+    [options]="sizeList"
+    [defaultSelectedValue]="selectedTableSize"
+    (valueChanged)="tablesizeChanged($event)"
+  ></gol-size-selector>
+  <gol-button
+    class="u-margin-top-small"
+    primary
+    text="Start game"
+    (click)="startGame()"
+  ></gol-button>
+</div>
