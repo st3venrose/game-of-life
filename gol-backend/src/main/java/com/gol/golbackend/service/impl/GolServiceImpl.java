@@ -10,6 +10,7 @@ import com.gol.golbackend.service.GolService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -44,6 +45,7 @@ public class GolServiceImpl implements GolService {
 		return gameTableRepository.save(newGameTable);
 	}
 
+	@Transactional(readOnly = true)
 	@Override
 	public GameTable getGameState(final Long gameStateId) {
 		return gameTableRepository.findById(gameStateId).orElseThrow(() -> new NotFoundException("Game state is not found!"));

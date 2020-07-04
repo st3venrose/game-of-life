@@ -1,0 +1,24 @@
+version: '3.1'
+services:
+  gol-db:
+    image: 'postgres:12.3-alpine'
+    container_name: gol-db
+    environment:
+      - POSTGRES_PASSWORD=gol-postgres
+      - POSTGRES_USER=gol-postgres
+      - POSTGRES_DB=game-of-life
+    ports:
+      - '5432:5432'
+  gol-backend:
+    container_name: gol-backend
+    build: ./gol-backend
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - DB_SERVER=gol-db
+      - POSTGRES_DB=game-of-life
+      - POSTGRES_USER=gol-postgres
+      - POSTGRES_PASSWORD=gol-postgres
+    depends_on:
+      - gol-db
+    ports:
+      - '8080:8080'
