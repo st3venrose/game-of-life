@@ -1,8 +1,8 @@
 package com.gol.golbackend.service;
 
-import com.gol.golbackend.dto.GameTableDto;
-import com.gol.golbackend.entity.GameTable;
-import com.gol.golbackend.entity.TableRow;
+import com.gol.golbackend.dto.GameStateDto;
+import com.gol.golbackend.entity.GameState;
+import com.gol.golbackend.entity.Row;
 import com.gol.golbackend.exception.NotFoundException;
 import com.gol.golbackend.repository.GameTableRepository;
 import com.gol.golbackend.service.impl.GolServiceImpl;
@@ -37,36 +37,36 @@ public class GolServiceImplTest {
 	@InjectMocks
 	private GolServiceImpl subject;
 
-	private GameTable gameTable = new GameTable(2l, 1l, 3l, Arrays.asList(new TableRow()));
+	private GameState gameState = new GameState(2l, 1l, 3l, 0, Arrays.asList(new Row()));
 
 	@Before
 	public void init() {
-		when(gameTableRepository.save(any(GameTable.class))).then(returnsFirstArg());
+		when(gameTableRepository.save(any(GameState.class))).then(returnsFirstArg());
 	}
 
 	@Test
 	public void testStartGame() {
-		when(gameStateCalculatorService.calculateNextGameState(gameTable.getTableRows())).thenReturn(gameTable.getTableRows());
+		when(gameStateCalculatorService.calculateNextGameState(gameState.getRows())).thenReturn(gameState.getRows());
 
-		GameTableDto gameTableDto = new GameTableDto();
-		gameTableDto.setTableRows(Arrays.asList(new TableRow()));
-		GameTable resultGameTable = subject.startGame(gameTableDto);
-		assertThat(resultGameTable.getTableRows()).isNotNull();
+		GameStateDto gameStateDto = new GameStateDto();
+		gameStateDto.setRows(Arrays.asList(new Row()));
+		GameState resultGameState = subject.startGame(gameStateDto);
+		assertThat(resultGameState.getRows()).isNotNull();
 	}
 
 	@Test
 	public void testCalculateNextGameState() {
-		doReturn(gameTable).when(subject).getGameState(1l);
+		doReturn(gameState).when(subject).getGameState(1l);
 
-		GameTable resultGameTable = subject.calculateNextGameState(1l);
-		assertThat(resultGameTable.getTableRows()).isNotNull();
+		GameState resultGameState = subject.calculateNextGameState(1l);
+		assertThat(resultGameState.getRows()).isNotNull();
 	}
 
 	@Test
 	public void testGetGameState() {
-		when(gameTableRepository.findById(anyLong())).thenReturn(Optional.ofNullable(gameTable));
-		GameTable resultGameTable = subject.getGameState(anyLong());
-		assertThat(resultGameTable.getTableRows()).isNotNull();
+		when(gameTableRepository.findById(anyLong())).thenReturn(Optional.ofNullable(gameState));
+		GameState resultGameState = subject.getGameState(anyLong());
+		assertThat(resultGameState.getRows()).isNotNull();
 	}
 
 	@Test(expected = NotFoundException.class)

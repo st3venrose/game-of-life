@@ -1,12 +1,12 @@
 package com.gol.golbackend.service;
 
-import com.gol.golbackend.dto.GameTableDto;
-import com.gol.golbackend.entity.GameTable;
+import com.gol.golbackend.dto.GameStateDto;
+import com.gol.golbackend.entity.GameState;
 
 public interface GolService {
-	GameTable startGame(GameTableDto gameTableDto);
+	GameState startGame(GameStateDto gameStateDto);
 
-	GameTable calculateNextGameState(Long gameStateId);
+	GameState calculateNextGameState(Long gameStateId);
 
-	GameTable getGameState(Long gameStateId);
+	GameState getGameState(Long gameStateId);
 }

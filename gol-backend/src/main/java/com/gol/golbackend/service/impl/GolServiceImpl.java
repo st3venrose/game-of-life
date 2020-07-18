@@ -1,8 +1,7 @@
 package com.gol.golbackend.service.impl;
 
-import com.gol.golbackend.dto.GameTableDto;
-import com.gol.golbackend.entity.GameTable;
-import com.gol.golbackend.entity.TableRow;
+import com.gol.golbackend.dto.GameStateDto;
+import com.gol.golbackend.entity.GameState;
 import com.gol.golbackend.exception.NotFoundException;
 import com.gol.golbackend.repository.GameTableRepository;
 import com.gol.golbackend.service.GameStateCalculatorService;
@@ -12,49 +11,63 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import static java.util.Objects.isNull;
 
 @Service
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class GolServiceImpl implements GolService {
+
+	private final static int DEFAULT_TABLE_STATE_INDEX = 1;
 
 	private final GameTableRepository gameTableRepository;
 
 	private final GameStateCalculatorService gameStateCalculatorService;
 
 	@Override
-	public GameTable startGame(final GameTableDto gameTableDto) {
-		final GameTable gameTable = new GameTable();
-		final List<TableRow> tableRows = gameStateCalculatorService.calculateNextGameState(gameTableDto.getTableRows());
-
-		gameTable.getTableRows().addAll(tableRows);
-
-		return gameTableRepository.save(gameTable);
+	public GameState startGame(final GameStateDto gameStateDto) {
+		final GameState userDefinedGameState = this.saveUserDefinedGameTable(gameStateDto);
+		return this.calculateNextGameState(userDefinedGameState.getId());
 	}
 
 	@Override
-	public GameTable calculateNextGameState(final Long gameTableId) {
-		final GameTable newGameTable = new GameTable();
-		final GameTable gameTable = this.getGameState(gameTableId);
+	public GameState calculateNextGameState(final Long gameTableId) {
+		final GameState newGameState = new GameState();
+		final GameState gameState = this.getGameState(gameTableId);
 
-		newGameTable.setTableRows(gameStateCalculatorService.calculateNextGameState(gameTable.getTableRows()));
-		newGameTable.setPreviousGameTableId(gameTableId);
+		newGameState.setRows(gameStateCalculatorService.calculateNextGameState(gameState.getRows()));
+		newGameState.setPreviousGameStateId(gameTableId);
+		newGameState.setIndex(this.updateIndex(gameState.getIndex()));
 
-		this.updatePreviousGameTable(gameTableId, newGameTable.getId());
+		final GameState savedGameState = gameTableRepository.save(newGameState);
+		this.updatePreviousGameTable(gameTableId, savedGameState.getId());
 
-		return gameTableRepository.save(newGameTable);
+		return savedGameState;
 	}
 
 	@Transactional(readOnly = true)
 	@Override
-	public GameTable getGameState(final Long gameStateId) {
+	public GameState getGameState(final Long gameStateId) {
 		return gameTableRepository.findById(gameStateId).orElseThrow(() -> new NotFoundException("Game state is not found!"));
 	}
 
 	private void updatePreviousGameTable(final Long gameStateId, final Long nextGameStateId) {
-		final GameTable previousGameState = this.getGameState(gameStateId);
+		final GameState previousGameState = this.getGameState(gameStateId);
 
-		previousGameState.setNextGameTableId(nextGameStateId);
+		previousGameState.setNextGameStateId(nextGameStateId);
 		gameTableRepository.save(previousGameState);
+	}
+
+	private GameState saveUserDefinedGameTable(final GameStateDto gameStateDto) {
+		final GameState gameState = new GameState();
+		gameState.setRows(gameStateDto.getRows());
+		gameState.setIndex(this.updateIndex(gameState.getIndex()));
+
+		return gameTableRepository.save(gameState);
+	}
+
+	private Integer updateIndex(final Integer currentIndex) {
+		int newIndex = isNull(currentIndex) ? DEFAULT_TABLE_STATE_INDEX : currentIndex + 1;
+
+		return newIndex;
 	}
 }

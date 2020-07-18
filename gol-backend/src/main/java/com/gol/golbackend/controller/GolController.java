@@ -1,7 +1,7 @@
 package com.gol.golbackend.controller;
 
-import com.gol.golbackend.dto.GameTableDto;
-import com.gol.golbackend.entity.GameTable;
+import com.gol.golbackend.dto.GameStateDto;
+import com.gol.golbackend.entity.GameState;
 import com.gol.golbackend.service.GolService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -15,17 +15,17 @@ public class GolController {
 	private GolService golServiceImpl;
 
 	@PostMapping("/start-game")
-	public GameTable startGame(@Validated @RequestBody final GameTableDto gameTableDto) {
-		return golServiceImpl.startGame(gameTableDto);
+	public GameState startGame(@Validated @RequestBody final GameStateDto gameStateDto) {
+		return golServiceImpl.startGame(gameStateDto);
 	}
 
 	@GetMapping("/new-game-state/{gameStateId}")
-	public GameTable processGameState(@PathVariable final Long gameStateId) {
+	public GameState processGameState(@PathVariable final Long gameStateId) {
 		return golServiceImpl.calculateNextGameState(gameStateId);
 	}
 
 	@GetMapping("/game-state/{gameStateId}")
-	public GameTable getGameState(@PathVariable final Long gameStateId) {
+	public GameState getGameState(@PathVariable final Long gameStateId) {
 		return golServiceImpl.getGameState(gameStateId);
 	}
 }

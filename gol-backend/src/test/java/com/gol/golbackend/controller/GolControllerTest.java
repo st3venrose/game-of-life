@@ -1,9 +1,9 @@
 package com.gol.golbackend.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gol.golbackend.dto.GameTableDto;
-import com.gol.golbackend.entity.GameTable;
-import com.gol.golbackend.entity.TableRow;
+import com.gol.golbackend.dto.GameStateDto;
+import com.gol.golbackend.entity.GameState;
+import com.gol.golbackend.entity.Row;
 import com.gol.golbackend.exception.NotFoundException;
 import com.gol.golbackend.service.GolService;
 import org.junit.Test;
@@ -38,15 +38,15 @@ public class GolControllerTest {
 
 	public static ObjectMapper objectMapper = new ObjectMapper();
 
-	private GameTable gameTable = new GameTable(2l, 1l, 3l, Arrays.asList(new TableRow()));
+	private GameState gameState = new GameState(2l, 1l, 3l, 0, Arrays.asList(new Row()));
 
 	@Test
 	public void testStartGame() throws Exception {
-		when(golServiceImpl.startGame(any(GameTableDto.class))).thenReturn(gameTable);
+		when(golServiceImpl.startGame(any(GameStateDto.class))).thenReturn(gameState);
 
 		mvc.perform(post("/api/start-game")
 				.contentType(MediaType.APPLICATION_JSON)
-				.content(objectMapper.writeValueAsString(gameTable)))
+				.content(objectMapper.writeValueAsString(gameState)))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.id", is(2)))
 				.andExpect(jsonPath("$.previousGameTableId", is(1)))
@@ -55,19 +55,19 @@ public class GolControllerTest {
 
 	@Test
 	public void testStartGameBadRequest() throws Exception {
-		when(golServiceImpl.startGame(any(GameTableDto.class))).thenReturn(gameTable);
-		GameTableDto invalidGameTableDto = new GameTableDto();
-		invalidGameTableDto.setTableRows(null);
+		when(golServiceImpl.startGame(any(GameStateDto.class))).thenReturn(gameState);
+		GameStateDto invalidGameStateDto = new GameStateDto();
+		invalidGameStateDto.setRows(null);
 
 		mvc.perform(post("/api/start-game")
 				.contentType(MediaType.APPLICATION_JSON)
-				.content(objectMapper.writeValueAsString(invalidGameTableDto)))
+				.content(objectMapper.writeValueAsString(invalidGameStateDto)))
 				.andExpect(status().isBadRequest());
 	}
 
 	@Test
 	public void testProcessGameState() throws Exception {
-		when(golServiceImpl.calculateNextGameState(anyLong())).thenReturn(gameTable);
+		when(golServiceImpl.calculateNextGameState(anyLong())).thenReturn(gameState);
 
 		mvc.perform(get("/api/new-game-state/{gameStateId}", 1L)
 				.contentType(MediaType.APPLICATION_JSON))
@@ -79,7 +79,7 @@ public class GolControllerTest {
 
 	@Test
 	public void testGetGameState() throws Exception {
-		when(golServiceImpl.getGameState(anyLong())).thenReturn(gameTable);
+		when(golServiceImpl.getGameState(anyLong())).thenReturn(gameState);
 
 		mvc.perform(get("/api/game-state/{gameStateId}", 1L)
 				.contentType(MediaType.APPLICATION_JSON))
