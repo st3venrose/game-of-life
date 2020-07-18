@@ -1,0 +1,34 @@
+:host {
+  --color-field-empty: #eaeaea;
+  --color-field-live: #1bb635;
+  --color-field-dead: #9b2525;
+}
+
+.table {
+  width: 100%;
+  margin: 0 auto;
+
+  &__row {
+    display: flex;
+    justify-content: center;
+  }
+
+  &__field {
+    width: 7rem;
+    height: 7rem;
+    margin: 0.5rem;
+    border: solid 1px;
+
+    &--empty {
+      background-color: var(--color-field-empty);
+    }
+
+    &--live {
+      background-color: var(--color-field-live);
+    }
+
+    &--dead {
+      background-color: var(--color-field-dead);
+    }
+  }
+}

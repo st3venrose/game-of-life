@@ -1,12 +1,12 @@
-import { ITableRow } from '../types/index';
+import { IRow } from '../types/index';
 
 export interface IStartGame {
-  tableRows: ITableRow[];
+  rows: IRow[];
 }
 
-export interface IGameTable {
+export interface IGameState {
   id: number;
-  previousGameTableId?: number;
-  nextGameTableId?: number;
-  tableRows: ITableRow[];
+  previousGameStateId?: number;
+  nextGameStateId?: number;
+  rows: IRow[];
 }

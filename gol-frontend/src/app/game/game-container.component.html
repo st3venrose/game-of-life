@@ -1,0 +1,34 @@
+<div class="game-container">
+  <gol-status [tableIndex]="(gameModel.gameState$ | async)?.index"></gol-status>
+  <gol-game-table
+    [gameState]="(gameModel.gameState$ | async)?.rows"
+    (onSelectField)="selectField($event)"
+  ></gol-game-table>
+  <div class="actions u-margin-top-small">
+    <gol-button
+      class="u-margin-right-small"
+      confirm
+      text="Play"
+      icon="play"
+      [isDisabled]="gameModel.gameIsRunning$ | async"
+      (click)="playGame()"
+    ></gol-button>
+    <gol-button
+      class="u-margin-right-small"
+      primary
+      iconRight
+      text="Previous"
+      icon="chevron_left"
+      [isDisabled]="!(gameModel.hasPreviousGameState$ | async) || (gameModel.gameIsRunning$ | async)"
+      (click)="previousGameState()"
+    ></gol-button>
+    <gol-button class="u-margin-right-small" warning text="Pause" icon="pause" (click)="pauseGame()"></gol-button>
+    <gol-button
+      primary
+      text="Next"
+      icon="chevron_right"
+      [isDisabled]="!(gameModel.hasNextGameState$ | async) || (gameModel.gameIsRunning$ | async)"
+      (click)="nextGameState()"
+    ></gol-button>
+  </div>
+</div>

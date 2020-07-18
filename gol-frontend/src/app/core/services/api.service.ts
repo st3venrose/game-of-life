@@ -22,7 +22,7 @@ export class ApiService {
   private api = environment.BACKEND_API_URL;
 
   public get<T>(endPoint: string, options?: IHttpRequest): Observable<T> {
-    return this.http.get<T>(this.api + endPoint, options);
+    return this.http.get<T>(`${this.api}/${endPoint}`, options);
   }
 
   public post<T>(endPoint: string, params?: object, options?: IHttpRequest): Observable<T> {

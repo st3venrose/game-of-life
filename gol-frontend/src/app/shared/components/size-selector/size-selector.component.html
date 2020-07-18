@@ -1,11 +1,7 @@
 <div class="selector" (click)="toggleOptionsVisibility()">
   <div class="selector__selections">
     <span class="selector__label">{{ selectedOption }}</span>
-    <gol-icon
-      name="arrow_down"
-      class="icon"
-      [ngClass]="{ 'icon-down': isOpened }"
-    ></gol-icon>
+    <gol-icon name="arrow_down" class="icon" [ngClass]="{ 'icon-down': isOpened }"></gol-icon>
   </div>
   <ul class="selector__items" [ngClass]="{ open: isOpened }">
     <li *ngFor="let value of options" (click)="selectOption(value)">

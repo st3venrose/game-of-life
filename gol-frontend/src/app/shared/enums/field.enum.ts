@@ -1,5 +1,5 @@
 export enum Field {
-  EMPTY,
-  LIVE,
-  DEAD,
+  EMPTY = 'EMPTY',
+  LIVE = 'LIVE',
+  DEAD = 'DEAD',
 }

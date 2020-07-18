@@ -1,3 +1,4 @@
-<button class="btn">
-  <span class="btn__text">{{ text }}</span>
+<button class="btn" [disabled]="isDisabled" (click)="onButtonClick($event)">
+  <span class="btn__text" (click)="onChildElementClick($event)">{{ text }}</span>
+  <gol-icon class="btn__icon" *ngIf="icon" [name]="icon" (click)="onChildElementClick($event)"></gol-icon>
 </button>

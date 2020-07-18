@@ -5,7 +5,7 @@ export interface IField {
   fieldStatus: Field;
 }
 
-export interface ITableRow {
+export interface IRow {
   id?: string;
-  rowFieldsg: Field[];
+  fields: IField[];
 }

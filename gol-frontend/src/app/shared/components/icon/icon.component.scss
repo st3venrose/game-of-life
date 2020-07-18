@@ -1,11 +1,16 @@
+$width: 20px;
+$height: 20px;
+
 :host {
   color: inherit;
   display: inline-block;
+  width: $width;
+  height: $height;
 
   svg {
     color: inherit;
     fill: currentColor;
-    width: 20px;
-    height: 20px;
+    width: $width;
+    height: $height;
   }
 }

@@ -1,0 +1,10 @@
+<div class="table">
+  <div class="table__row" *ngFor="let tableRows of gameState; index as i">
+    <div
+      class="table__field"
+      [ngClass]="getFieldClass(field.fieldStatus)"
+      *ngFor="let field of tableRows.fields; index as j"
+      (click)="selectField(i, j)"
+    ></div>
+  </div>
+</div>

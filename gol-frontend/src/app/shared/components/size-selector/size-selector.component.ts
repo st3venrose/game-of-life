@@ -1,11 +1,4 @@
-import {
-  Component,
-  OnInit,
-  Input,
-  Output,
-  EventEmitter,
-  ElementRef,
-} from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ElementRef, ChangeDetectionStrategy } from '@angular/core';
 import { Observable, Subject, BehaviorSubject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -18,6 +11,7 @@ enum TOGGLE_STATUS {
   selector: 'gol-size-selector',
   templateUrl: './size-selector.component.html',
   styleUrls: ['./size-selector.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SizeSelectorComponent implements OnInit {
   TOGGLE_STATUS = TOGGLE_STATUS;
@@ -32,11 +26,9 @@ export class SizeSelectorComponent implements OnInit {
 
   private onDocumentClickBound;
 
-  private ngUnsubscribe: Subject<void> = new Subject<void>(); //TODO
+  private destroy$: Subject<void> = new Subject<void>();
 
-  private status$: BehaviorSubject<TOGGLE_STATUS> = new BehaviorSubject(
-    TOGGLE_STATUS.CLOSE
-  );
+  private status$: BehaviorSubject<TOGGLE_STATUS> = new BehaviorSubject(TOGGLE_STATUS.CLOSE);
 
   constructor(private elementRef: ElementRef) {}
 
@@ -72,7 +64,7 @@ export class SizeSelectorComponent implements OnInit {
 
   closeSelectOnDocumentClick() {
     this.statusChange()
-      .pipe(takeUntil(this.ngUnsubscribe))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((newStatus: TOGGLE_STATUS) => {
         if (newStatus === TOGGLE_STATUS.OPEN) {
           // Listen to click events to realise when to close the dropdown.
@@ -81,25 +73,20 @@ export class SizeSelectorComponent implements OnInit {
           }
           document.addEventListener('click', this.onDocumentClickBound, true);
         } else {
-          document.removeEventListener(
-            'click',
-            this.onDocumentClickBound,
-            true
-          );
+          document.removeEventListener('click', this.onDocumentClickBound, true);
         }
       });
   }
 
   onDocumentClick(event: MouseEvent) {
     const target: EventTarget = event.target;
-    if (
-      target instanceof HTMLElement &&
-      target.hasAttribute('dropdownToggle')
-    ) {
+    if (target instanceof HTMLElement && target.hasAttribute('dropdownToggle')) {
       // Ignore dropdownToggle element, even if it's outside the menu.
       return;
     }
+
     const isInsideClick = this.elementRef.nativeElement.contains(target);
+
     if (!isInsideClick) {
       this.close();
     } else {
