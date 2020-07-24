@@ -32,3 +32,24 @@
     }
   }
 }
+
+.placeholder {
+  background-color: var(--color-field-empty);
+  box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12);
+  animation-duration: 2s;
+  animation-fill-mode: forwards;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+  animation-name: placeholderAnimate;
+  background: #f6f7f8; // Fallback
+  background: linear-gradient(to right, #eee 2%, #ddd 35%, #eee 45%);
+}
+
+@keyframes placeholderAnimate {
+  0% {
+    background-position: -7rem 0;
+  }
+  100% {
+    background-position: 7rem 0;
+  }
+}

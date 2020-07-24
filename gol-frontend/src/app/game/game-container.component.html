@@ -2,6 +2,7 @@
   <gol-status [tableIndex]="(gameModel.gameState$ | async)?.index"></gol-status>
   <gol-game-table
     [gameState]="(gameModel.gameState$ | async)?.rows"
+    [tableSize]="gameModel.tableSize"
     (onSelectField)="selectField($event)"
   ></gol-game-table>
   <div class="actions u-margin-top-small">

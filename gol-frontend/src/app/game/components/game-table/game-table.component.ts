@@ -12,6 +12,8 @@ import { IFieldPosition } from '../../types/index';
 export class GameTableComponent {
   @Input() gameState: IRow[];
 
+  @Input() tableSize: number = 0;
+
   @Output() onSelectField = new EventEmitter<IFieldPosition>();
 
   selectField(i: number, j: number): void {
@@ -29,5 +31,9 @@ export class GameTableComponent {
       default:
         return '';
     }
+  }
+
+  placholderArray() {
+    return Array(this.tableSize).fill(0);
   }
 }

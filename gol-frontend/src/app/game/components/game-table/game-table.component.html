@@ -1,4 +1,4 @@
-<div class="table">
+<div class="table" *ngIf="gameState; else contentPlaceholder">
   <div class="table__row" *ngFor="let tableRows of gameState; index as i">
     <div
       class="table__field"
@@ -8,3 +8,9 @@
     ></div>
   </div>
 </div>
+
+<ng-template #contentPlaceholder>
+  <div class="table__row" *ngFor="let item of placholderArray()">
+    <div class="placeholder table__field" *ngFor="let item2 of placholderArray()"></div>
+  </div>
+</ng-template>

@@ -1,8 +1,7 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { Observable, BehaviorSubject, Subject, throwError } from 'rxjs';
 import { takeUntil, tap, catchError } from 'rxjs/operators';
-import { GameApiService } from '../../core/services';
-import { LocalStorageService, ErrorHandlerService } from '../../core/services';
+import { GameApiService, LocalStorageService, ErrorHandlerService } from '../../core/services';
 import { TABLE_ID_STOREGE_KEY } from '../../shared/constants/constants';
 import { IGameState } from '../../shared/models/game-table.model';
 import { IFieldPosition } from '../types/index';

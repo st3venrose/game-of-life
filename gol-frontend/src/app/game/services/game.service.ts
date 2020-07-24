@@ -14,6 +14,7 @@ export interface IGameModel {
   hasPreviousGameState$: BehaviorSubject<boolean>;
   hasNextGameState$: BehaviorSubject<boolean>;
   gameIsRunning$: BehaviorSubject<boolean>;
+  tableSize: number;
 }
 
 @Injectable()
@@ -65,6 +66,7 @@ export class GameService implements OnDestroy {
       hasPreviousGameState$: this.hasPreviousGameState$,
       hasNextGameState$: this.hasNextGameState$,
       gameIsRunning$: this.gameIsRunning$,
+      tableSize: this.localStorageService.get(TABLE_SIZE_STOREGE_KEY),
     };
   }
 
