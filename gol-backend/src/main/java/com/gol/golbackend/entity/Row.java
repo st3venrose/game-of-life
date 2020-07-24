@@ -25,6 +25,6 @@ public class Row implements Serializable {
 
 	@OneToMany(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
 	@JoinColumn(name = "gameStateRowId", referencedColumnName = "id", nullable = false)
-	@NotEmpty()
+	@NotEmpty
 	private List<Field> fields = new ArrayList<>();
 }

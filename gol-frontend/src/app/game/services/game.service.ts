@@ -1,6 +1,6 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { Observable, BehaviorSubject, Subject, timer, forkJoin, of } from 'rxjs';
-import { takeUntil, takeWhile, expand, delay } from 'rxjs/operators';
+import { takeUntil, expand, delay, catchError } from 'rxjs/operators';
 import { LocalStorageService } from '../../core/services';
 import { GameTableGeneratorService } from './game-table-generator.service';
 import { GameStateStoreService } from './game-state-store.service';
@@ -135,7 +135,11 @@ export class GameService implements OnDestroy {
       .pipe(
         delay(HTTP_CALLS_DELAY_IN_MS),
         expand(() => forkJoin([timer(HTTP_CALLS_DELAY_IN_MS), this.getGameState()])),
-        takeUntil(this.runGame$)
+        takeUntil(this.runGame$),
+        catchError((err) => {
+          this.pauseGame();
+          return of();
+        })
       )
       .subscribe();
   }

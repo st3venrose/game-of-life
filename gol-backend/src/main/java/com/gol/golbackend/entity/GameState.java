@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,5 +32,6 @@ public class GameState implements Serializable {
 
 	@OneToMany(cascade = CascadeType.ALL, fetch=FetchType.LAZY)
 	@JoinColumn(name = "game_state_state_id")
+	@NotEmpty
 	private List<Row> rows = new ArrayList<>();
 }

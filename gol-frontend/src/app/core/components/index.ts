@@ -1,2 +1,4 @@
 import { HeaderComponent } from './header/header.component';
-export const components = [HeaderComponent];
+import { ErrorComponent } from './error/error.component';
+
+export const components = [HeaderComponent, ErrorComponent];
