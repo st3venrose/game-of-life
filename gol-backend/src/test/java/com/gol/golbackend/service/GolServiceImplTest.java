@@ -46,19 +46,16 @@ public class GolServiceImplTest {
 
 	@Test
 	public void testStartGame() {
-		when(gameStateCalculatorService.calculateNextGameState(gameState.getRows())).thenReturn(gameState.getRows());
-
 		GameStateDto gameStateDto = new GameStateDto();
-		gameStateDto.setRows(Arrays.asList(new Row()));
+		gameStateDto.setRows(gameState.getRows());
 		GameState resultGameState = subject.startGame(gameStateDto);
 		assertThat(resultGameState.getRows()).isNotNull();
 	}
 
 	@Test
-	public void testCalculateNextGameState() {
-		doReturn(gameState).when(subject).getGameState(1l);
-
-		GameState resultGameState = subject.calculateNextGameState(1l);
+	public void testGetNextCalculatedGameState() {
+		doReturn(gameState).when(subject).getGameState(anyLong());
+		GameState resultGameState = subject.getNextCalculatedGameState(1l);
 		assertThat(resultGameState.getRows()).isNotNull();
 	}
 

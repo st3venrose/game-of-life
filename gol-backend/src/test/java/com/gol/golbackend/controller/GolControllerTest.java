@@ -38,7 +38,7 @@ public class GolControllerTest {
 
 	public static ObjectMapper objectMapper = new ObjectMapper();
 
-	private GameState gameState = new GameState(2l, 1l, 3l, 0, Arrays.asList(new Row()));
+	private GameState gameState = new GameState(2l, 1l, 3l, 2, Arrays.asList(new Row()));
 
 	@Test
 	public void testStartGame() throws Exception {
@@ -49,8 +49,9 @@ public class GolControllerTest {
 				.content(objectMapper.writeValueAsString(gameState)))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.id", is(2)))
-				.andExpect(jsonPath("$.previousGameTableId", is(1)))
-				.andExpect(jsonPath("$.nextGameTableId", is(3)));
+				.andExpect(jsonPath("$.previousGameStateId", is(1)))
+				.andExpect(jsonPath("$.nextGameStateId", is(3)))
+				.andExpect(jsonPath("$.index", is(2)));
 	}
 
 	@Test
@@ -67,14 +68,15 @@ public class GolControllerTest {
 
 	@Test
 	public void testProcessGameState() throws Exception {
-		when(golServiceImpl.calculateNextGameState(anyLong())).thenReturn(gameState);
+		when(golServiceImpl.getNextCalculatedGameState(anyLong())).thenReturn(gameState);
 
 		mvc.perform(get("/api/new-game-state/{gameStateId}", 1L)
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.id", is(2)))
-				.andExpect(jsonPath("$.previousGameTableId", is(1)))
-				.andExpect(jsonPath("$.nextGameTableId", is(3)));
+				.andExpect(jsonPath("$.previousGameStateId", is(1)))
+				.andExpect(jsonPath("$.nextGameStateId", is(3)))
+				.andExpect(jsonPath("$.index", is(2)));
 	}
 
 	@Test
@@ -85,8 +87,10 @@ public class GolControllerTest {
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.id", is(2)))
-				.andExpect(jsonPath("$.previousGameTableId", is(1)))
-				.andExpect(jsonPath("$.nextGameTableId", is(3)));
+				.andExpect(jsonPath("$.previousGameStateId", is(1)))
+				.andExpect(jsonPath("$.nextGameStateId", is(3)))
+				.andExpect(jsonPath("$.index", is(2)));
+
 	}
 
 	@Test

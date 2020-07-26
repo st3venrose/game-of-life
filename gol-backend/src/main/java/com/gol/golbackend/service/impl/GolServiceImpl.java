@@ -26,22 +26,13 @@ public class GolServiceImpl implements GolService {
 	@Override
 	public GameState startGame(final GameStateDto gameStateDto) {
 		final GameState userDefinedGameState = this.saveUserDefinedGameTable(gameStateDto);
-		return this.calculateNextGameState(userDefinedGameState.getId());
+		return this.createNextGameState(userDefinedGameState);
 	}
 
 	@Override
-	public GameState calculateNextGameState(final Long gameTableId) {
-		final GameState newGameState = new GameState();
+	public GameState getNextCalculatedGameState(final Long gameTableId) {
 		final GameState gameState = this.getGameState(gameTableId);
-
-		newGameState.setRows(gameStateCalculatorService.calculateNextGameState(gameState.getRows()));
-		newGameState.setPreviousGameStateId(gameTableId);
-		newGameState.setIndex(this.updateIndex(gameState.getIndex()));
-
-		final GameState savedGameState = gameTableRepository.save(newGameState);
-		this.updatePreviousGameTable(gameTableId, savedGameState.getId());
-
-		return savedGameState;
+		return this.createNextGameState(gameState);
 	}
 
 	@Transactional(readOnly = true)
@@ -50,11 +41,23 @@ public class GolServiceImpl implements GolService {
 		return gameTableRepository.findById(gameStateId).orElseThrow(() -> new NotFoundException("Game state is not found!"));
 	}
 
-	private void updatePreviousGameTable(final Long gameStateId, final Long nextGameStateId) {
-		final GameState previousGameState = this.getGameState(gameStateId);
+	private GameState createNextGameState(final GameState gameState) {
+		final GameState newGameState = new GameState();
+		newGameState.setRows(gameStateCalculatorService.calculateNextGameState(gameState.getRows()));
+		newGameState.setPreviousGameStateId(gameState.getId());
+		newGameState.setIndex(this.updateIndex(gameState.getIndex()));
 
-		previousGameState.setNextGameStateId(nextGameStateId);
-		gameTableRepository.save(previousGameState);
+		final GameState savedGameState = gameTableRepository.save(newGameState);
+		this.updatePreviousGameTable(gameState, savedGameState.getId());
+
+		return savedGameState;
+	}
+
+	private void updatePreviousGameTable(final GameState gameState, final Long nextGameStateId) {
+		// final GameState previousGameState = this.getGameState(gameStateId);
+
+		gameState.setNextGameStateId(nextGameStateId);
+		gameTableRepository.save(gameState);
 	}
 
 	private GameState saveUserDefinedGameTable(final GameStateDto gameStateDto) {

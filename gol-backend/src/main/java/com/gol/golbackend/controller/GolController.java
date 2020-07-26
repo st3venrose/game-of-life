@@ -21,7 +21,7 @@ public class GolController {
 
 	@GetMapping("/new-game-state/{gameStateId}")
 	public GameState processGameState(@PathVariable final Long gameStateId) {
-		return golServiceImpl.calculateNextGameState(gameStateId);
+		return golServiceImpl.getNextCalculatedGameState(gameStateId);
 	}
 
 	@GetMapping("/game-state/{gameStateId}")
