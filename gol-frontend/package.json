@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "build": "npm run sprites && ng build",
     "sprites": "svg-sprite --config sprite-config.json src/assets/svg/*.svg",
     "test": "ng test",
     "lint": "ng lint",
