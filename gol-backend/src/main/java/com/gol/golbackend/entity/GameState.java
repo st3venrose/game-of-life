@@ -14,7 +14,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "game_table")
+@Table(name = "game_state")
 public class GameState implements Serializable {
 	@Id
 	@Column(name = "id")
