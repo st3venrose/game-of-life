@@ -6,20 +6,15 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Entity
 @Table(name = "game_state")
-public class GameState implements Serializable {
-	@Id
-	@Column(name = "id")
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+public class GameState extends BaseEntity {
 
 	@Column(name = "previous_state_id")
 	private Long previousGameStateId;
@@ -31,7 +26,15 @@ public class GameState implements Serializable {
 	private Integer index;
 
 	@OneToMany(cascade = CascadeType.ALL, fetch=FetchType.LAZY)
-	@JoinColumn(name = "game_state_state_id")
+	@JoinColumn(name = "game_state_id")
 	@NotEmpty
 	private List<Row> rows = new ArrayList<>();
+
+	public GameState(Long id, Long previousGameStateId, Long nextGameStateId, Integer index, @NotEmpty List<Row> rows) {
+		super(id);
+		this.previousGameStateId = previousGameStateId;
+		this.nextGameStateId = nextGameStateId;
+		this.index = index;
+		this.rows = rows;
+	}
 }

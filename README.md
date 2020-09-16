@@ -32,3 +32,9 @@ After running the docker compose it can be accessible using this connectors:
 - Database: _game-of-life_
 - User: _gol-postgres_
 - Password: _gol-postgres_
+
+#### Run only DB in docker container
+
+```
+docker run --name gol-postgres -e POSTGRES_PASSWORD=gol-postgres -d -p 5432:5432 postgres
+```
