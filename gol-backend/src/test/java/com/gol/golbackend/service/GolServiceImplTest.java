@@ -37,10 +37,17 @@ public class GolServiceImplTest {
 	@InjectMocks
 	private GolServiceImpl subject;
 
-	private GameState gameState = new GameState(2l, 1l, 3l, 0, Arrays.asList(new Row()));
+	private GameState gameState;
 
 	@Before
 	public void init() {
+		gameState = GameState.builder()
+				.id(2l)
+				.previousGameStateId(1l)
+				.nextGameStateId(3l)
+				.index(0)
+				.rows(Arrays.asList(new Row())).build();
+
 		when(gameTableRepository.save(any(GameState.class))).then(returnsFirstArg());
 	}
 

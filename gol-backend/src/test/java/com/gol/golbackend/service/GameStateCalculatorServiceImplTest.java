@@ -9,7 +9,6 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -21,9 +20,9 @@ public class GameStateCalculatorServiceImplTest {
 	@InjectMocks
 	private GameStateCalculatorServiceImpl subject;
 
-	private static final Field liveField = new Field(FieldStatus.LIVE);
-	private static final Field emptyField = new Field(FieldStatus.EMPTY);
-	private static final Field deadField = new Field(FieldStatus.DEAD);
+	private static final Field live = new Field(FieldStatus.LIVE);
+	private static final Field empty = new Field(FieldStatus.EMPTY);
+	private static final Field dead = new Field(FieldStatus.DEAD);
 
 	@Test
 	public void changedGameStateTest() {
@@ -40,36 +39,20 @@ public class GameStateCalculatorServiceImplTest {
 	}
 
 	private List<Row> createStarterGameSate() {
-		final List<Row> tableRows = new ArrayList<>();
-		Row row0 = new Row();
-		Row row1 = new Row();
-		Row row2 = new Row();
-		Row row3 = new Row();
-
-		row0.setFields(Arrays.asList(liveField, emptyField, liveField));
-		row1.setFields(Arrays.asList(emptyField, liveField, emptyField));
-		row2.setFields(Arrays.asList(liveField, liveField, emptyField));
-		row3.setFields(Arrays.asList(emptyField, emptyField, emptyField));
-
-		tableRows.addAll(Arrays.asList(row0, row1, row2, row3));
-
-		return tableRows;
+		return Arrays.asList(
+				Row.builder().fields(Arrays.asList(live, empty, live)).build(),
+				Row.builder().fields(Arrays.asList(empty, live, empty)).build(),
+				Row.builder().fields(Arrays.asList(live, live, empty)).build(),
+				Row.builder().fields(Arrays.asList(empty, empty, empty)).build()
+		);
 	}
 
 	private List<Row> createExceptedTableRow() {
-		final List<Row> tableRows = new ArrayList<>();
-		Row row0 = new Row();
-		Row row1 = new Row();
-		Row row2 = new Row();
-		Row row3 = new Row();
-
-		row0.setFields(Arrays.asList(deadField, liveField, deadField));
-		row1.setFields(Arrays.asList(emptyField, deadField, liveField));
-		row2.setFields(Arrays.asList(liveField, liveField, liveField));
-		row3.setFields(Arrays.asList(liveField, liveField, emptyField));
-
-		tableRows.addAll(Arrays.asList(row0, row1, row2, row3));
-
-		return tableRows;
+		return Arrays.asList(
+				Row.builder().fields(Arrays.asList(dead, live, dead)).build(),
+				Row.builder().fields(Arrays.asList(empty, dead, live)).build(),
+				Row.builder().fields(Arrays.asList(live, live, live)).build(),
+				Row.builder().fields(Arrays.asList(live, live, empty)).build()
+		);
 	}
 }

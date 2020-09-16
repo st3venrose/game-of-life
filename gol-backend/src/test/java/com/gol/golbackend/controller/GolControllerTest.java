@@ -6,6 +6,7 @@ import com.gol.golbackend.entity.GameState;
 import com.gol.golbackend.entity.Row;
 import com.gol.golbackend.exception.NotFoundException;
 import com.gol.golbackend.service.GolService;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +39,17 @@ public class GolControllerTest {
 
 	public static ObjectMapper objectMapper = new ObjectMapper();
 
-	private GameState gameState = new GameState(2l, 1l, 3l, 2, Arrays.asList(new Row()));
+	private GameState gameState;
+
+	@Before
+	public void init() {
+		gameState = GameState.builder()
+				.id(2l)
+				.previousGameStateId(1l)
+				.nextGameStateId(3l)
+				.index(2)
+				.rows(Arrays.asList(new Row())).build();
+	}
 
 	@Test
 	public void testStartGame() throws Exception {
@@ -70,7 +81,7 @@ public class GolControllerTest {
 	public void testProcessGameState() throws Exception {
 		when(golServiceImpl.getNextCalculatedGameState(anyLong())).thenReturn(gameState);
 
-		mvc.perform(get("/api/new-game-state/{gameStateId}", 1L)
+		mvc.perform(get("/api/new-game-state/{gameStateId}", 1)
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.id", is(2)))

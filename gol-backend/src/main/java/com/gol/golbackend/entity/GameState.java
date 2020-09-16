@@ -1,6 +1,6 @@
 package com.gol.golbackend.entity;
 
-import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "game_state")
@@ -30,6 +29,7 @@ public class GameState extends BaseEntity {
 	@NotEmpty
 	private List<Row> rows = new ArrayList<>();
 
+	@Builder
 	public GameState(Long id, Long previousGameStateId, Long nextGameStateId, Integer index, @NotEmpty List<Row> rows) {
 		super(id);
 		this.previousGameStateId = previousGameStateId;

@@ -1,6 +1,6 @@
 package com.gol.golbackend.entity;
 
-import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "row")
@@ -20,4 +19,10 @@ public class Row extends BaseEntity {
 	@JoinColumn(name = "game_state_id", referencedColumnName = "id", nullable = false)
 	@NotEmpty
 	private List<Field> fields = new ArrayList<>();
+
+	@Builder
+	public Row(Long id, @NotEmpty List<Field> fields) {
+		super(id);
+		this.fields = fields;
+	}
 }
