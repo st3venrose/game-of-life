@@ -33,6 +33,7 @@ public class GameStateCalculatorServiceImplTest {
 			for (int currentColumn = 0; currentColumn < newTableRows.get(currentRow).getFields().size(); currentColumn++) {
 				final FieldStatus currentFieldStatus = newTableRows.get(currentRow).getFields().get(currentColumn).getFieldStatus();
 				final FieldStatus exceptedFieldStatus = exceptedTableRows.get(currentRow).getFields().get(currentColumn).getFieldStatus();
+
 				assertEquals(exceptedFieldStatus, currentFieldStatus);
 			}
 		}
@@ -40,19 +41,19 @@ public class GameStateCalculatorServiceImplTest {
 
 	private List<Row> createStarterGameSate() {
 		return Arrays.asList(
-				Row.builder().fields(Arrays.asList(live, empty, live)).build(),
-				Row.builder().fields(Arrays.asList(empty, live, empty)).build(),
-				Row.builder().fields(Arrays.asList(live, live, empty)).build(),
-				Row.builder().fields(Arrays.asList(empty, empty, empty)).build()
+				new Row(Arrays.asList(live, empty, live)),
+				new Row(Arrays.asList(empty, live, empty)),
+				new Row(Arrays.asList(live, live, empty)),
+				new Row(Arrays.asList(empty, empty, empty))
 		);
 	}
 
 	private List<Row> createExceptedTableRow() {
 		return Arrays.asList(
-				Row.builder().fields(Arrays.asList(dead, live, dead)).build(),
-				Row.builder().fields(Arrays.asList(empty, dead, live)).build(),
-				Row.builder().fields(Arrays.asList(live, live, live)).build(),
-				Row.builder().fields(Arrays.asList(live, live, empty)).build()
+				new Row(Arrays.asList(dead, live, dead)),
+				new Row(Arrays.asList(empty, dead, live)),
+				new Row(Arrays.asList(live, live, live)),
+				new Row(Arrays.asList(live, live, empty))
 		);
 	}
 }

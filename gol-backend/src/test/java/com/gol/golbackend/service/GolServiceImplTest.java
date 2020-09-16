@@ -1,5 +1,7 @@
 package com.gol.golbackend.service;
 
+import com.gol.golbackend.common.Constants;
+import com.gol.golbackend.converter.GameStateDtoConverter;
 import com.gol.golbackend.dto.GameStateDto;
 import com.gol.golbackend.entity.GameState;
 import com.gol.golbackend.entity.Row;
@@ -18,6 +20,7 @@ import java.util.Arrays;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.AdditionalAnswers.returnsFirstArg;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -27,11 +30,16 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class GolServiceImplTest {
 
+	final static Integer EXPECTED_GAME_STATE_INDEX = Constants.DEFAULT_TABLE_STATE_INDEX + 1;
+
 	@Mock
 	private GameTableRepository gameTableRepository;
 
 	@Mock
 	private GameStateCalculatorService gameStateCalculatorService;
+
+	@Mock
+	private GameStateDtoConverter gameStateDtoConverter;
 
 	@Spy
 	@InjectMocks
@@ -45,7 +53,7 @@ public class GolServiceImplTest {
 				.id(2l)
 				.previousGameStateId(1l)
 				.nextGameStateId(3l)
-				.index(0)
+				.index(Constants.DEFAULT_TABLE_STATE_INDEX)
 				.rows(Arrays.asList(new Row())).build();
 
 		when(gameTableRepository.save(any(GameState.class))).then(returnsFirstArg());
@@ -53,23 +61,30 @@ public class GolServiceImplTest {
 
 	@Test
 	public void testStartGame() {
+		gameState.setIndex(null);
+		when(gameStateDtoConverter.convert(any())).thenReturn(gameState);
 		GameStateDto gameStateDto = new GameStateDto();
 		gameStateDto.setRows(gameState.getRows());
 		GameState resultGameState = subject.startGame(gameStateDto);
+
 		assertThat(resultGameState.getRows()).isNotNull();
+		assertEquals(EXPECTED_GAME_STATE_INDEX, resultGameState.getIndex());
 	}
 
 	@Test
 	public void testGetNextCalculatedGameState() {
 		doReturn(gameState).when(subject).getGameState(anyLong());
 		GameState resultGameState = subject.getNextCalculatedGameState(1l);
+
 		assertThat(resultGameState.getRows()).isNotNull();
+		assertEquals(EXPECTED_GAME_STATE_INDEX, resultGameState.getIndex());
 	}
 
 	@Test
 	public void testGetGameState() {
 		when(gameTableRepository.findById(anyLong())).thenReturn(Optional.ofNullable(gameState));
 		GameState resultGameState = subject.getGameState(anyLong());
+
 		assertThat(resultGameState.getRows()).isNotNull();
 	}
 
