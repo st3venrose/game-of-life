@@ -1,4 +1,4 @@
-package com.gol.golbackend.controller;
+package com.gol.golbackend.common;
 
 import com.gol.golbackend.dto.ErrorDTO;
 import com.gol.golbackend.dto.ValidationErrorResponse;

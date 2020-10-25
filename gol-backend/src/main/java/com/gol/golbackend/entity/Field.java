@@ -1,14 +1,16 @@
 package com.gol.golbackend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.gol.golbackend.common.FieldStatus;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 
-@Data
+@Setter
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -19,9 +21,13 @@ public class Field extends BaseEntity {
 	@Column(name = "field_status")
 	private FieldStatus fieldStatus;
 
-	@Builder
-	public Field(Long id, FieldStatus fieldStatus) {
-		super(id);
+
+	@ManyToOne
+	@JoinColumn(name = "row_id")
+	@JsonIgnore
+	private Row row;
+
+	public Field(FieldStatus fieldStatus) {
 		this.fieldStatus = fieldStatus;
 	}
 }

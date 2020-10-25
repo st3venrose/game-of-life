@@ -1,15 +1,17 @@
 package com.gol.golbackend.entity;
 
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import java.util.ArrayList;
 import java.util.List;
 
-@Data
+@Setter
+@Getter
 @NoArgsConstructor
 @Entity
 @Table(name = "game_state")
@@ -24,9 +26,8 @@ public class GameState extends BaseEntity {
 	@Column(name = "index")
 	private Integer index;
 
-	@OneToMany(cascade = CascadeType.ALL, fetch=FetchType.LAZY)
-	@JoinColumn(name = "game_state_id")
 	@NotEmpty
+	@OneToMany(mappedBy = "gameState", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private List<Row> rows = new ArrayList<>();
 
 	@Builder
@@ -36,5 +37,10 @@ public class GameState extends BaseEntity {
 		this.nextGameStateId = nextGameStateId;
 		this.index = index;
 		this.rows = rows;
+	}
+
+	public void addRows(Row row) {
+		this.getRows().add(row);
+		row.setGameState(this);
 	}
 }
