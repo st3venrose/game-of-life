@@ -10,7 +10,7 @@ public interface GameTableRepository extends CrudRepository<GameState, Long> {
 
     @Query(value = """
             select * from game_state g
-            join row r on g.id = r.game_state_id
+            join table_row r on g.id = r.game_state_id
             join field f on r.id = f.row_id
             where g.id = ? group by r.id, g.id, f.id;
             """, nativeQuery = true)

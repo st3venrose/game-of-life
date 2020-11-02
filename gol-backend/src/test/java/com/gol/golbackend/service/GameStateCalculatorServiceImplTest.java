@@ -4,18 +4,17 @@ import com.gol.golbackend.common.FieldStatus;
 import com.gol.golbackend.entity.Field;
 import com.gol.golbackend.entity.Row;
 import com.gol.golbackend.service.impl.GameStateCalculatorServiceImpl;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@RunWith(MockitoJUnitRunner.class)
-public class GameStateCalculatorServiceImplTest {
+@ExtendWith(MockitoExtension.class)
+class GameStateCalculatorServiceImplTest {
 
 	@InjectMocks
 	private GameStateCalculatorServiceImpl subject;
@@ -25,7 +24,7 @@ public class GameStateCalculatorServiceImplTest {
 	private static final Field dead = new Field(FieldStatus.DEAD);
 
 	@Test
-	public void changedGameStateTest() {
+	void changedGameStateTest() {
 		final List<Row> newTableRows = subject.calculateNextGameState(this.createStarterGameSate());
 		final List<Row> exceptedTableRows = this.createExceptedTableRow();
 
@@ -40,20 +39,20 @@ public class GameStateCalculatorServiceImplTest {
 	}
 
 	private List<Row> createStarterGameSate() {
-		return Arrays.asList(
-				new Row(Arrays.asList(live, empty, live)),
-				new Row(Arrays.asList(empty, live, empty)),
-				new Row(Arrays.asList(live, live, empty)),
-				new Row(Arrays.asList(empty, empty, empty))
+		return List.of(
+				new Row(List.of(live, empty, live)),
+				new Row(List.of(empty, live, empty)),
+				new Row(List.of(live, live, empty)),
+				new Row(List.of(empty, empty, empty))
 		);
 	}
 
 	private List<Row> createExceptedTableRow() {
-		return Arrays.asList(
-				new Row(Arrays.asList(dead, live, dead)),
-				new Row(Arrays.asList(empty, dead, live)),
-				new Row(Arrays.asList(live, live, live)),
-				new Row(Arrays.asList(live, live, empty))
+		return List.of(
+				new Row(List.of(dead, live, dead)),
+				new Row(List.of(empty, dead, live)),
+				new Row(List.of(live, live, live)),
+				new Row(List.of(live, live, empty))
 		);
 	}
 }

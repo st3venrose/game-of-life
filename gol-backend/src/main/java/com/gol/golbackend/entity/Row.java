@@ -14,7 +14,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @Entity
-@Table(name = "row")
+@Table(name = "table_row")
 public class Row extends BaseEntity {
 
 	@ManyToOne
@@ -28,5 +28,10 @@ public class Row extends BaseEntity {
 
 	public Row(List<Field> fields) {
 		this.fields = fields;
+	}
+
+	public void addField(Field field) {
+		this.getFields().add(field);
+		field.setRow(this);
 	}
 }

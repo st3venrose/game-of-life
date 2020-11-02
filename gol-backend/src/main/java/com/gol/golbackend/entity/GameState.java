@@ -39,7 +39,7 @@ public class GameState extends BaseEntity {
 		this.rows = rows;
 	}
 
-	public void addRows(Row row) {
+	public void addRow(Row row) {
 		this.getRows().add(row);
 		row.setGameState(this);
 	}

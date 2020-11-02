@@ -7,6 +7,7 @@ import com.gol.golbackend.entity.GameState;
 import com.gol.golbackend.exception.NotFoundException;
 import com.gol.golbackend.repository.GameTableRepository;
 import com.gol.golbackend.service.GameStateCalculatorService;
+import com.gol.golbackend.service.GameStateMapService;
 import com.gol.golbackend.service.GolService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,8 @@ public class GolServiceImpl implements GolService {
 	private final GameStateCalculatorService gameStateCalculatorService;
 
 	private final GameStateDtoConverter gameStateDtoConverter;
+
+	private final GameStateMapService gameStateMapService;
 
 	@Override
 	public GameState startGame(final GameStateDto gameStateDto) {
@@ -58,15 +61,15 @@ public class GolServiceImpl implements GolService {
 		gameTableRepository.save(gameState);
 	}
 
-	private GameState saveNewGameState(final GameState gameState) {
-		gameState.setIndex(this.updateIndex(gameState.getIndex()));
 
-		return gameTableRepository.save(gameState);
+	private GameState saveNewGameState(final GameState gameState) {
+		final GameState mappedGameState = gameStateMapService.mapRelationOwners(gameState);
+		mappedGameState.setIndex(this.updateIndex(gameState.getIndex()));
+
+		return gameTableRepository.save(mappedGameState);
 	}
 
 	private Integer updateIndex(final Integer currentIndex) {
-		int newIndex = isNull(currentIndex) ? Constants.DEFAULT_TABLE_STATE_INDEX : currentIndex + 1;
-
-		return newIndex;
+		return isNull(currentIndex) ? Constants.DEFAULT_TABLE_STATE_INDEX : currentIndex + 1;
 	}
 }
